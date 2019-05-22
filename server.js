@@ -37,6 +37,7 @@ app.use('/users', user);
 app.use((req, res, next) => {
   req.locals.success_msg = req.flash('success_msg');
   req.locals.error_msg = req.flash('error_msg');
+  req.locals.error = req.flash('error');
   next();
 })
 
