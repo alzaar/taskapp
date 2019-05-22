@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const db = require('./config/keys').MongoURI;
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
+//Passport Setup
+require('./config/passport')(passport);
 //Router
 const mainRoute = require('./routes/index');
 const user = require('./routes/user');
@@ -24,6 +27,9 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash());
+//Passport Initialize
+app.use(passport.initialize());
+app.use(passport.session());
 app.set('view engine', 'ejs');
 app.use('/', mainRoute);
 app.use('/users', user);
@@ -33,5 +39,6 @@ app.use((req, res, next) => {
   req.locals.error_msg = req.flash('error_msg');
   next();
 })
+
 //For Starting the server
 app.listen(PORT, () => { console.log(`Listening at ${PORT}`) });
